@@ -36,25 +36,25 @@ const product = {
     {
       id: 1,
       name: 'Angled view',
-      src: 'http://localhost:8910/fundayz.png',
+      src: 'https://flow-hackathon.vercel.app/fundayz.png',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     {
       id: 2,
       name: 'Angled view',
-      src: 'http://localhost:8910/1.png',
+      src: 'https://flow-hackathon.vercel.app/1.png',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     {
       id: 3,
       name: 'Angled view',
-      src: 'http://localhost:8910/2.png',
+      src: 'https://flow-hackathon.vercel.app/2.png',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     {
       id: 4,
       name: 'Angled view',
-      src: 'http://localhost:8910/3.png',
+      src: 'https://flow-hackathon.vercel.app/3.png',
       alt: 'Angled front view with bag zipped and handles upright.',
     },
     // More images...
