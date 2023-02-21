@@ -1956,7 +1956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.16.3, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.20.7, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.9.2":
   version: 7.21.0
   resolution: "@babel/runtime@npm:7.21.0"
   dependencies:
@@ -3884,6 +3884,152 @@ __metadata:
     mkdirp: ^1.0.4
     rimraf: ^3.0.2
   checksum: 11b2151e6d1de6f6eb23128de5aa8a429fd9097d839a5190cb77aa47a6b627022c42d50fa7c47a00f1c9f8f0c1560092b09b061855d293fa0741a2a94cfb174d
+  languageName: node
+  linkType: hard
+
+"@onflow/config@npm:^1.0.3, @onflow/config@npm:^1.0.4, @onflow/config@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@onflow/config@npm:1.0.5"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    "@onflow/util-actor": ^1.1.2
+  checksum: d18ebb404ba0f12eaa395f0b060505193493cf8814e4ba8cad4f88faff175765cbc532f0f5b2ee6e0e0b47c27f3fbb56609bf7a474f63859b99259937a54b7df
+  languageName: node
+  linkType: hard
+
+"@onflow/fcl@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@onflow/fcl@npm:1.3.2"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    "@onflow/config": ^1.0.5
+    "@onflow/interaction": 0.0.11
+    "@onflow/rlp": ^1.0.2
+    "@onflow/sdk": ^1.1.2
+    "@onflow/types": ^1.0.5
+    "@onflow/util-actor": ^1.1.1
+    "@onflow/util-address": ^1.0.2
+    "@onflow/util-invariant": ^1.0.2
+    "@onflow/util-logger": ^1.1.1
+    "@onflow/util-template": ^1.0.3
+    "@onflow/util-uid": ^1.0.2
+    node-fetch: ^2.6.7
+  checksum: 39c9a6ee5a95fc543c18f6eb336146586fe4354382a655630a1b1979fb973d7b5124f061ed8e0b96cd808f6e76760a18db3d0d032fae6af5536bcf7680eec9f9
+  languageName: node
+  linkType: hard
+
+"@onflow/interaction@npm:0.0.11":
+  version: 0.0.11
+  resolution: "@onflow/interaction@npm:0.0.11"
+  checksum: 4e17b0ae857db5edbf70801e81e3d7bb2e4d326a184429bb06d6cae14b05acbd00e2cbd4bf4093c2a4215faddeec8589cae05ca8b645d40da35215307107f894
+  languageName: node
+  linkType: hard
+
+"@onflow/rlp@npm:^1.0.2":
+  version: 1.0.4
+  resolution: "@onflow/rlp@npm:1.0.4"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    buffer: ^6.0.3
+  checksum: 942362cc8ef1aedc13c37b2d0e402dba5d7fc72a691590f55c5511b5b061a07d6bbd55edcb0ba8f6082c1583eef9a2b67c96125e064d1d6976b6330daf162391
+  languageName: node
+  linkType: hard
+
+"@onflow/sdk@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@onflow/sdk@npm:1.1.2"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    "@onflow/config": ^1.0.3
+    "@onflow/rlp": ^1.0.2
+    "@onflow/transport-http": ^1.5.0
+    "@onflow/util-actor": ^1.1.1
+    "@onflow/util-address": ^1.0.2
+    "@onflow/util-invariant": ^1.0.2
+    "@onflow/util-logger": ^1.1.1
+    "@onflow/util-template": ^1.0.3
+    deepmerge: ^4.2.2
+    sha3: ^2.1.4
+  checksum: bd47fcd5ad8aa1a4c264ca729c0ebea2afb168bbe068ba4d3900defd9f21392454c1718d41e727ada2df09532886af2c05079ff3560c322611d83af8e941fc4f
+  languageName: node
+  linkType: hard
+
+"@onflow/transport-http@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@onflow/transport-http@npm:1.5.0"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    "@onflow/util-address": ^1.0.2
+    "@onflow/util-invariant": ^1.0.2
+    "@onflow/util-logger": ^1.1.1
+    "@onflow/util-template": ^1.0.3
+    node-fetch: ^2.6.7
+  checksum: 4b1fd29c9b8d5e7b35b0a1bfa2a3dea1bb2d340e9d66e59980eee733b01f157acd845094f76638fe50b2a7a59ebc0007ae7bd26f25fa3b6caeeba820cb62f017
+  languageName: node
+  linkType: hard
+
+"@onflow/types@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@onflow/types@npm:1.0.5"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+  checksum: 7f7638adbb588bde018360c999315a1236099fb7f0b2982c562674fc1dd295a1a1d0ad6588dda31309f1e9945c0f7c8f50592e947946d4d444a565871c30684d
+  languageName: node
+  linkType: hard
+
+"@onflow/util-actor@npm:^1.1.1, @onflow/util-actor@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@onflow/util-actor@npm:1.1.2"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    queue-microtask: 1.1.2
+  checksum: 45f5dbc4416b0140b108ae258380f5960319e7f4e0ff236ffdb7b68ea63d1e067dfb07f1bd87c7556d80f1c9d6db38f677d61ab33cfb13084ccbbfb888a08ace
+  languageName: node
+  linkType: hard
+
+"@onflow/util-address@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "@onflow/util-address@npm:1.0.3"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+  checksum: 9a7b5f5faabbc2558d61ec3eb220706839483e02d50b43ad6b8ccf8e2237ef20cb93dd51cb804f55cce2aa98c24fddd1c0fa080fec5c364107aa0062379d0f24
+  languageName: node
+  linkType: hard
+
+"@onflow/util-invariant@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "@onflow/util-invariant@npm:1.0.3"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+  checksum: 2ca870886184b6935c11250c55fd2388ee417e788a114595d0046f1f02c0382f9179aa889a9ac0463b3f63a96c4bb6902a2ffa8663258cb494bee57ee4b2db70
+  languageName: node
+  linkType: hard
+
+"@onflow/util-logger@npm:^1.1.1":
+  version: 1.1.2
+  resolution: "@onflow/util-logger@npm:1.1.2"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+    "@onflow/config": ^1.0.4
+  checksum: 7ab1d99a3fd43e6b446202904cc22881b5520cee834fafb3e857a3949856afc85686f8dfa10b5deb28c8b38bcfaf95fa2094a9bcc2bd021f05ca33406c1d2051
+  languageName: node
+  linkType: hard
+
+"@onflow/util-template@npm:^1.0.3":
+  version: 1.0.4
+  resolution: "@onflow/util-template@npm:1.0.4"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+  checksum: e2bdfed033c51c8a7dfca938cbaadd1120f1afc70519a3c17b3baf62a3d67dfd724bba8ac7a5edcea727a2bfb838018b432e4a337dbaec18d6e3990be02ec6a4
+  languageName: node
+  linkType: hard
+
+"@onflow/util-uid@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "@onflow/util-uid@npm:1.0.3"
+  dependencies:
+    "@babel/runtime": ^7.18.6
+  checksum: 282a2211ec8e5b2f841cf84aa9b34425cacdb02f4f75028109fa8798ea47728f86393a0dd4c0d0c2b9b30e72c539573f5d552c0af080ee22009ad240a0a9358a
   languageName: node
   linkType: hard
 
@@ -9391,6 +9537,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"buffer@npm:6.0.3, buffer@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "buffer@npm:6.0.3"
+  dependencies:
+    base64-js: ^1.3.1
+    ieee754: ^1.2.1
+  checksum: 2a905fbbcde73cc5d8bd18d1caa23715d5f83a5935867c2329f0ac06104204ba7947be098fe1317fbd8830e26090ff8e764f08cd14fefc977bb248c3487bcbd0
+  languageName: node
+  linkType: hard
+
 "buffer@npm:^4.3.0":
   version: 4.9.2
   resolution: "buffer@npm:4.9.2"
@@ -9409,16 +9565,6 @@ __metadata:
     base64-js: ^1.3.1
     ieee754: ^1.1.13
   checksum: 27cac81cff434ed2876058d72e7c4789d11ff1120ef32c9de48f59eab58179b66710c488987d295ae89a228f835fc66d088652dffeb8e3ba8659f80eb091d55e
-  languageName: node
-  linkType: hard
-
-"buffer@npm:^6.0.3":
-  version: 6.0.3
-  resolution: "buffer@npm:6.0.3"
-  dependencies:
-    base64-js: ^1.3.1
-    ieee754: ^1.2.1
-  checksum: 2a905fbbcde73cc5d8bd18d1caa23715d5f83a5935867c2329f0ac06104204ba7947be098fe1317fbd8830e26090ff8e764f08cd14fefc977bb248c3487bcbd0
   languageName: node
   linkType: hard
 
@@ -20268,6 +20414,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"queue-microtask@npm:1.1.2":
+  version: 1.1.2
+  resolution: "queue-microtask@npm:1.1.2"
+  checksum: f8ecd36435c9c68102e135d13648df67e9f34515da788e5a6ce1333e9591bdb936be742dff2fcd0eb2559d92c799580022401b275ad5213f715cb2908eb2d9c8
+  languageName: node
+  linkType: hard
+
 "queue-microtask@npm:^1.2.2":
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
@@ -21222,6 +21375,8 @@ __metadata:
   dependencies:
     "@headlessui/react": ^1.7.11
     "@heroicons/react": ^2.0.16
+    "@onflow/fcl": ^1.3.2
+    "@onflow/types": ^1.0.5
     "@redwoodjs/core": 4.1.4
     "@tailwindcss/aspect-ratio": ^0.4.2
     "@tailwindcss/forms": ^0.5.3
@@ -21675,6 +21830,15 @@ __metadata:
   version: 1.8.2
   resolution: "sha1-es@npm:1.8.2"
   checksum: b2f37bead586db729e4d48785a0802b6d41fe0a1c9345c4acde1266fc2045b859110ddfc10f879aac4d4e1b20ed65a0c94d4177a3b58ee6431a79f1a33cc756a
+  languageName: node
+  linkType: hard
+
+"sha3@npm:^2.1.4":
+  version: 2.1.4
+  resolution: "sha3@npm:2.1.4"
+  dependencies:
+    buffer: 6.0.3
+  checksum: d3c1542e30977c421957e87ceca699931dfca3f61e9f25d407efb3fd0dfdfa3eb274342bd905b46d4d862eeb741dd168c9a43a36b068436d63b818471be33e94
   languageName: node
   linkType: hard
 
