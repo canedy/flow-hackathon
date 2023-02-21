@@ -1,19 +1,22 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import { Fragment } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-const user = {
+import * as fcl from "@onflow/fcl";
+import * as types from "@onflow/types";
+
+const userProfile = {
   name: 'Tom Cook',
   email: 'tom@example.com',
   imageUrl:
     'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-  { name: 'Collection', href: '#', current: true },
-  // { name: 'Team', href: '#', current: false },
+  { name: 'Collections', href: '#', current: true },
+  { name: 'Points', href: '#', current: false },
   // { name: 'Projects', href: '#', current: false },
   // { name: 'Calendar', href: '#', current: false },
   // { name: 'Reports', href: '#', current: false },
@@ -29,6 +32,52 @@ function classNames(...classes) {
 }
 
 const HomePage = () => {
+
+  const [ user, setUser ] = useState();
+
+  useEffect(() => {
+    // This listens to changes in the user objects
+    // and updates the connected user
+    fcl.currentUser().subscribe(setUser);
+  }, [])
+
+  const logIn = () => {
+    fcl.authenticate();
+  };
+
+  const logOut = () => {
+    fcl.unauthenticate();
+  };
+
+  const RenderLogin = () => {
+    return (
+      <div>
+        <a
+          href="#"
+          className="rounded-md border border-transparent py-1 px-2 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
+          onClick={() => logIn()}>
+          Connect Wallet
+        </a>  
+      </div>
+    )
+  }
+
+  const RenderLogout = () => {
+    if (user && user.addr) {
+      return (
+        <div>
+        <a
+          href="#"
+          className="rounded-md border border-transparent py-1 px-2 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
+          onClick={() => logOut()}>
+          {user.addr}
+        </a>  
+      </div>
+      )
+    }
+  }
+
+
   return (
     <>
       <MetaTags title="Home" description="Home page" />
@@ -71,12 +120,7 @@ const HomePage = () => {
                       </div>
                       <div className="hidden md:block">
                         <div className="ml-4 flex items-center md:ml-6">
-                          <a
-                            href="#"
-                            className="rounded-md border border-transparent py-1 px-2 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
-                            onClick={() => logIn()}>
-                            Connect Wallet
-                          </a>  
+                          {user && user.addr ? <RenderLogout />: <RenderLogin />}
                         </div>
                       </div>
                       {/* <div className="hidden md:block">
@@ -162,11 +206,11 @@ const HomePage = () => {
                   <div className="border-t border-gray-700 pt-4 pb-3">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
-                        <img className="h-10 w-10 rounded-full" src={user.imageUrl} alt="" />
+                        <img className="h-10 w-10 rounded-full" src={userProfile.imageUrl} alt="" />
                       </div>
                       <div className="ml-3">
-                        <div className="text-base font-medium leading-none text-white">{user.name}</div>
-                        <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
+                        <div className="text-base font-medium leading-none text-white">{userProfile.name}</div>
+                        <div className="text-sm font-medium leading-none text-gray-400">{userProfile.email}</div>
                       </div>
                       <button
                         type="button"
@@ -195,7 +239,7 @@ const HomePage = () => {
           </Disclosure>
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-white">Quests</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-white">My Collections</h1>
             </div>
           </header>
         </div>
