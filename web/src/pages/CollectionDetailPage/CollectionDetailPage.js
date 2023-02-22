@@ -103,6 +103,12 @@ const product = {
   ],
 }
 
+const adData = {
+  image: "/#",
+  companyName: "TODO - Company Name",
+  slogan: "TODO - Company Slogan",
+  brand: "TODO - Company Address"
+}
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -331,8 +337,8 @@ const CollectionDetailPage = () => {
                 {/* Image gallery */}
                 <Tab.Group as="div" className="flex flex-col-reverse">
                   {/* Image selector */}
-                  <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
-                    <Tab.List className="grid grid-cols-4 gap-6">
+                  <div className="mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
+                    <Tab.List className="grid  grid-cols-2 sm:grid-cols-4 gap-6">
                       {product.images.map((image) => (
                         <Tab
                           key={image.id}
@@ -358,16 +364,49 @@ const CollectionDetailPage = () => {
                     </Tab.List>
                   </div>
                   
-                  <h1 className="text-2xl font-bold text-center pt-12 text-gray-600">Visit retailers below and collect your points.</h1>
+                  <h1 className="text-2xl font-bold text-center pt-12 text-gray-600">Visit Retailer. Collect Points. Earn Rewards.</h1>
 
                   <Tab.Panels className="aspect-w-1 aspect-h-1 w-full">
                     {product.images.map((image) => (
                       <Tab.Panel key={image.id}>
-                        <img
+                        {/* <img
                           src={image.src}
                           alt={image.alt}
                           className="h-full w-full object-cover object-center sm:rounded-lg"
-                        />
+                        /> */}
+
+                                {/* <div className="flex min-h-screen items-center justify-center"> */}
+                                {/* <div className="flex min-h-fit items-center justify-center"> */}
+                                  {/* <div className="group h-screen w-screen [perspective:1500px]"> */}
+                                  <div className="flex group h-full [perspective:1500px]">
+                                    {/* <div className="relative h-4/6 w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]"> */}
+                                    <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+                                      <div className="absolute inset-0">
+                                        <img
+                                          src={image.src}
+                                          alt=''
+                                          // className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
+                                          className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
+                                        />
+                                      </div>
+                                      {/* <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]"></div> */}
+                                      <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                                        <div className='flex min-h-full flex-col items-center justify-center'>
+                                          <h1 className='text-3xl font-bold'>{adData.companyName}</h1>
+                                          <p className='text-lg'>{adData.slogan}</p>
+                                          <p className='text-base'>{adData.brand}</p>
+                                          <img
+                                            src='qrcode_clevelandwhiskey.com.png'
+                                            alt='todo - add QR Code'
+                                            className='pt-5 h-2/4 w-2/4'
+                                          />
+                                        </div>
+                                      </div>                
+                                    </div>
+                                   
+                                  </div>
+                                   <div className='pt-4 text-center text-xs'>Flip card by hovering or clicking image</div>
+                                {/* </div> */}
                       </Tab.Panel>
                     ))}
                   </Tab.Panels>

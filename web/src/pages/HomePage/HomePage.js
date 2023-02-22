@@ -326,9 +326,9 @@ const HomePage = () => {
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
               <h1 className="text-3xl font-bold text-center text-gray-600">Get On The Trail And Find Your Craft ...</h1>
-              <h1 className="text-xl font-bold text-center text-gray-600">TDLR; - Add some sub heading</h1>
+              <h1 className="text-xl font-bold text-center text-gray-600">TODO - Add some sub heading</h1>
               
-              <p className="text-center py-12">TDLR; - Insert Video of what this app can do</p>
+              <p className="text-center py-12">TODO - Insert Video of what this app can do</p>
             </div>
             {/* /End replace */}
           </div>
