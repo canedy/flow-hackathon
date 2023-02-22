@@ -103,12 +103,47 @@ const product = {
   ],
 }
 
+const products = [
+  {
+    id: 1,
+    name: 'North East Ohio Whiskey Tour',
+    href: '/collection-detail',
+    price: '$48',
+    imageSrc: 'https://flow-hackathon.vercel.app/fundayz.png',
+    imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
+  },
+  // {
+  //   id: 2,
+  //   name: 'Nomad Tumbler',
+  //   href: '#',
+  //   price: '$35',
+  //   imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
+  //   imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
+  // },
+  // {
+  //   id: 3,
+  //   name: 'Focus Paper Refill',
+  //   href: '#',
+  //   price: '$89',
+  //   imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
+  //   imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
+  // },
+  // {
+  //   id: 4,
+  //   name: 'Machined Mechanical Pencil',
+  //   href: '#',
+  //   price: '$35',
+  //   imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+  //   imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
+  // },
+  // More products...
+]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const HomePage = () => {
+const CollectionPage = () => {
 
   const [ user, setUser ] = useState();
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
@@ -157,7 +192,7 @@ const HomePage = () => {
 
   return (
     <>
-      <MetaTags title="Home" description="Home page" />
+      <MetaTags title="Collection" description="Collection page" />
 
       <div className="min-h-full">
         <div className="bg-gray-800 pb-32">
@@ -316,7 +351,7 @@ const HomePage = () => {
           </Disclosure>
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-white">Craft Block Quests</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-white">Collection</h1>
             </div>
           </header>
         </div>
@@ -325,10 +360,25 @@ const HomePage = () => {
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <h1 className="text-3xl font-bold text-center text-gray-600">Get On The Trail And Find Your Craft ...</h1>
-              <h1 className="text-xl font-bold text-center text-gray-600">TDLR; - Add some sub heading</h1>
-              
-              <p className="text-center py-12">TDLR; - Insert Video of what this app can do</p>
+            <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <h2 className="sr-only">Products</h2>
+
+        <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {products.map((product) => (
+            <a key={product.id} href={product.href} className="group">
+              <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
+                <img
+                  src={product.imageSrc}
+                  alt={product.imageAlt}
+                  className="h-full w-full object-cover object-center group-hover:opacity-75"
+                />
+              </div>
+              <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
+              {/* <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p> */}
+            </a>
+          ))}
+        </div>
+      </div>
             </div>
             {/* /End replace */}
           </div>
@@ -338,4 +388,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default CollectionPage
