@@ -3,7 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
-import { StarIcon } from '@heroicons/react/20/solid'
+import { QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 
 import * as fcl from "@onflow/fcl";
@@ -153,6 +153,53 @@ const HomePage = () => {
       </div>
       )
     }
+  }
+
+  const RenderActionPanalConnectWallet = () => {
+    return (
+      <div className="mx-96 bg-gray-50 sm:rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Connect Wallet</h3>
+          <div className="mt-2 max-w-xl text-sm text-gray-500">
+            <p>To get started let's login to keep track of your Craft Block Quest	&trade;</p>
+          </div>
+          <div className="mt-5">
+            <div className="flex justify-center relative mt-1">
+              <a
+                href="#"
+                className="rounded-md border border-transparent py-1 px-2 bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
+                onClick={() => logIn()}>
+                Connect Wallet
+              </a> 
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const RenderActionPanalEnterQuestCode = () => {
+    return (
+      <div className="mx-96 bg-gray-50 sm:rounded-lg">
+        <div className="px-4 py-5 sm:p-6">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Enter 6-digit Quest Code</h3>
+          <div className="mt-2 max-w-xl text-sm text-gray-500">
+            <p>To get started get your your Craft Block Quest	&trade; code from particpating retailer</p>
+          </div>
+          <div className="mt-5">
+            <div className="flex justify-center relative mt-1 rounded-md shadow-sm">
+              <input
+                type="text"
+                name="account-number"
+                id="account-number"
+                className="block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                placeholder="000000"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -325,10 +372,14 @@ const HomePage = () => {
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <h1 className="text-3xl font-bold text-center text-gray-600">Get On The Trail And Find Your Craft ...</h1>
-              <h1 className="text-xl font-bold text-center text-gray-600">TODO - Add some sub heading</h1>
+              <h1 className="text-3xl font-bold text-center text-gray-600">GET ON THE TRAIL AND FIND FRIENDS, FUN AND GREAT LIBATIONS</h1>
+              <h1 className="text-xl pt-6 font-bold text-center text-gray-600">LOCAL ARTISANS CREATING THE BEST CRAFT SPIRITS</h1>
               
               <p className="text-center py-12">TODO - Insert Video of what this app can do</p>
+
+
+              {user && user.addr ? <RenderActionPanalEnterQuestCode />: <RenderActionPanalConnectWallet />}
+
             </div>
             {/* /End replace */}
           </div>
