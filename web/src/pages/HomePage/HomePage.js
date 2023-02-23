@@ -9,6 +9,9 @@ import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '
 import * as fcl from "@onflow/fcl";
 import * as types from "@onflow/types";
 
+// Cadence Scripts and Transactions
+
+
 const userProfile = {
   name: 'Tom Cook',
   email: 'tom@example.com',
@@ -157,10 +160,10 @@ const HomePage = () => {
 
   const RenderActionPanalConnectWallet = () => {
     return (
-      <div className="mx-96 bg-gray-50 sm:rounded-lg">
-        <div className="px-4 py-5 sm:p-6">
+      <>
+        {/* <div className="px-4 py-5 sm:p-6"> */}
           <h3 className="text-lg font-medium leading-6 text-gray-900">Connect Wallet</h3>
-          <div className="mt-2 max-w-xl text-sm text-gray-500">
+          <div className="mt-2 text-lg text-gray-500">
             <p>To get started let's login to keep track of your Craft Block Quest	&trade;</p>
           </div>
           <div className="mt-5">
@@ -173,17 +176,17 @@ const HomePage = () => {
               </a> 
             </div>
           </div>
-        </div>
-      </div>
+        {/* </div> */}
+      </>
     )
   }
 
   const RenderActionPanalEnterQuestCode = () => {
     return (
-      <div className="mx-96 bg-gray-50 sm:rounded-lg">
+      <>
         <div className="px-4 py-5 sm:p-6">
           <h3 className="text-lg font-medium leading-6 text-gray-900">Enter 6-digit Quest Code</h3>
-          <div className="mt-2 max-w-xl text-sm text-gray-500">
+          <div className="mt-2 text-lg text-gray-500">
             <p>To get started get your your Craft Block Quest	&trade; code from particpating retailer</p>
           </div>
           <div className="mt-5">
@@ -198,7 +201,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 
@@ -372,14 +375,14 @@ const HomePage = () => {
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <h1 className="text-3xl font-bold text-center text-gray-600">GET ON THE TRAIL AND FIND FRIENDS, FUN AND GREAT LIBATIONS</h1>
+              <h1 className="text-3xl font-bold text-center text-gray-600">GET ON THE TRAIL AND MEET NEW FRIENDS, ENJOY LIBATIONS, AND EXPERIENCE FUN TIMES</h1>
               <h1 className="text-xl pt-6 font-bold text-center text-gray-600">LOCAL ARTISANS CREATING THE BEST CRAFT SPIRITS</h1>
               
               <p className="text-center py-12">TODO - Insert Video of what this app can do</p>
-
-
-              {user && user.addr ? <RenderActionPanalEnterQuestCode />: <RenderActionPanalConnectWallet />}
-
+              
+              <div className=" py-6 px-6 text-center bg-gray-50 sm:rounded-lg">  
+                {user && user.addr ? <RenderActionPanalEnterQuestCode />: <RenderActionPanalConnectWallet />}
+              </div>
             </div>
             {/* /End replace */}
           </div>
