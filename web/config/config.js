@@ -7,7 +7,7 @@ import * as fcl from "@onflow/fcl"
 //   .put("app.detail.icon", process.env.DETAIL_ICON)
 //   .put("discovery.wallet", process.env.TESTNET_WALLET_DISCOVERY);
 
-Testnet
+//Testnet
 fcl.config()
 .put("flow.network", "testnet")
 .put("app.detail.title", "Craft Block Quest")
