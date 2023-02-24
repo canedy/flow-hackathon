@@ -10,6 +10,7 @@ import * as fcl from "@onflow/fcl";
 import * as types from "@onflow/types";
 
 // Cadence Scripts and Transactions
+import { createCollectionTransaction } from "../../cadence/transactions/createCollection";
 
 
 const userProfile = {
@@ -122,9 +123,25 @@ const HomePage = () => {
     fcl.currentUser().subscribe(setUser);
   }, [])
 
-  const logIn = () => {
-    fcl.authenticate();
+  const logIn = async () => {
+    await fcl.authenticate();
+    createCollectionClick()
   };
+
+  const createCollectionClick = async () => {
+    const transactionId = await fcl.send([
+      fcl.transaction(createCollectionTransaction),
+      fcl.args([
+        
+      ]),
+      fcl.payer(fcl.authz),
+      fcl.proposer(fcl.authz),
+      fcl.authorizations([fcl.authz]),
+      fcl.limit(9999),
+    ]).then(fcl.decode);
+
+    console.log("Transaciton id: " + transactionId)
+  }
 
   const logOut = () => {
     fcl.unauthenticate();
@@ -372,12 +389,23 @@ const HomePage = () => {
         </div>
 
         <main className="-mt-32">
-          <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="mx-auto text-center max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <h1 className="text-3xl font-bold text-center text-gray-600">GET ON THE TRAIL AND MEET NEW FRIENDS, ENJOY LIBATIONS, AND EXPERIENCE FUN TIMES</h1>
-              <h1 className="text-xl pt-6 font-bold text-center text-gray-600">LOCAL ARTISANS CREATING THE BEST CRAFT SPIRITS</h1>
+              <h1 className="text-3xl font-bold text-gray-600">GET ON THE TRAIL AND MEET NEW FRIENDS, ENJOY LIBATIONS, AND EXPERIENCE FUN TIMES</h1>
               
+              
+              <ol className='mt-6'>
+                <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EMBARK</a> on a craft beverage journey and discover new favorites with Craft Block Trails</li>
+                <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">JOIN</a> a community of like-minded craft beverage enthusiasts with Craft Block Communities</li>
+                <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EXPERIENCE</a> special privileges and VIP access with Craft Block Pass</li>
+                <li className=''><a className="font-semibold underline underline-offset-4 text-gray-900">UNLOCK</a> a new level of craft beverage experience with Craft Block Games.</li>
+                {/* <li className='pb-2'>All benefits are <a className="font-semibold text-gray-900">SHARED</a> and <a className="font-semibold text-gray-900">TRADABLE</a> across retail companies</li> */}
+                
+              </ol>
+              <p className='mt-6 text-center'>All benefits are <a className="font-semibold text-gray-900">SHARED</a> and <a className="font-semibold text-gray-900">TRADABLE</a> across retail companies</p>
+
+
               <p className="text-center py-12">TODO - Insert Video of what this app can do</p>
               
               <div className=" py-6 px-6 text-center bg-gray-50 sm:rounded-lg">  
