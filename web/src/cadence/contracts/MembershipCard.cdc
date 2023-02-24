@@ -208,7 +208,31 @@ access(all) contract MembershipCard: NonFungibleToken {
 
     pub fun createEmptyCollection(): @NonFungibleToken.Collection {
         return <- create Collection()
+    }
+
+    pub resource interface AdminProxyPublic {
+        pub fun depositAdmin(admin: Capability<&Admin>) {
+            pre {
+                admin.check(): "This capability is invalid!"
+            }
+        }
+    }
+
+    pub resource AdminProxy: AdminProxyPublic {
+        pub var admin: Capability<&Admin>?
+
+        pub fun depositAdmin(admin: Capability<&Admin>) {
+            self.admin = admin
+        }
+
+        init() {
+            self.admin = nil
+        }
     }    
+
+    pub fun createProxy(): @AdminProxy {
+        return <- create AdminProxy()
+    }
 
     pub resource Admin {
         pub fun mintNFT(

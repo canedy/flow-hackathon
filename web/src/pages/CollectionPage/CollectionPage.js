@@ -386,7 +386,7 @@ const CollectionPage = () => {
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
               <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 {/* Replace with your content */}
-                  {user && user.addr ? <RenderCollection />: "Please log to see your Craft Block Quest (TM)"}
+                  {user && user.addr ? <RenderCollection /> : `Please login to your Wallet log to see your Craft Block Quest (TM)` }
                 {/* /End replace */}
               </div>
             </div>

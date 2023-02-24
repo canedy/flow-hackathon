@@ -3,7 +3,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
-import { QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
+import { CalculatorIcon, CheckBadgeIcon, UsersIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 
 import * as fcl from "@onflow/fcl";
@@ -11,7 +11,7 @@ import * as types from "@onflow/types";
 
 // Cadence Scripts and Transactions
 import { createCollectionTransaction } from "../../cadence/transactions/createCollection";
-
+import { claimQuestTransaction } from "../../cadence/transactions/claimQuest.js"
 
 const userProfile = {
   name: 'Tom Cook',
@@ -128,21 +128,6 @@ const HomePage = () => {
     createCollectionClick()
   };
 
-  const createCollectionClick = async () => {
-    const transactionId = await fcl.send([
-      fcl.transaction(createCollectionTransaction),
-      fcl.args([
-        
-      ]),
-      fcl.payer(fcl.authz),
-      fcl.proposer(fcl.authz),
-      fcl.authorizations([fcl.authz]),
-      fcl.limit(9999),
-    ]).then(fcl.decode);
-
-    console.log("Transaciton id: " + transactionId)
-  }
-
   const logOut = () => {
     fcl.unauthenticate();
   };
@@ -207,19 +192,63 @@ const HomePage = () => {
             <p>To get started get your your Craft Block Quest	&trade; code from particpating retailer</p>
           </div>
           <div className="mt-5">
-            <div className="flex justify-center relative mt-1 rounded-md shadow-sm">
-              <input
-                type="text"
-                name="account-number"
-                id="account-number"
-                className="block w-full rounded-md border-gray-300 pr-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                placeholder="000000"
-              />
-            </div>
+          <div className="mt-1 flex rounded-md shadow-sm">
+        <div className="relative flex flex-grow items-stretch focus-within:z-10">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <CalculatorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          </div>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="000000"
+          />
+        </div>
+        <a
+          href='#'
+          type="button"
+          className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          onClick={() => claim()}
+        >
+          <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          <span>Claim Membership Card</span>
+        </a>
+      </div>
           </div>
         </div>
       </>
     )
+  }
+
+  const createCollectionClick = async () => {
+    const transactionId = await fcl.send([
+      fcl.transaction(createCollectionTransaction),
+      fcl.args([
+        
+      ]),
+      fcl.payer(fcl.authz),
+      fcl.proposer(fcl.authz),
+      fcl.authorizations([fcl.authz]),
+      fcl.limit(9999),
+    ]).then(fcl.decode);
+
+    console.log("Transaciton id: " + transactionId)
+  }
+
+  const claim = async () => {
+    const transactionId = await fcl.mutate({
+      cadence: `${claimQuestTransaction}`,
+      args: (arg, t) => [
+
+      ], 
+      proposer: fcl.currentUser,
+      payer: fcl.currentUser,
+      limit: 99
+    })
+
+    console.log("Transaciton ID ", transactionId)
+    
   }
 
   return (
@@ -383,26 +412,26 @@ const HomePage = () => {
           </Disclosure>
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-white">Craft Block Quests</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-white">Craft Block Quest &trade;</h1>
             </div>
           </header>
         </div>
 
         <main className="-mt-32">
-          <div className="mx-auto text-center max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             {/* Replace with your content */}
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              <h1 className="text-3xl font-bold text-gray-600">GET ON THE TRAIL AND MEET NEW FRIENDS, ENJOY LIBATIONS, AND EXPERIENCE FUN TIMES</h1>
+              <h1 className="text-3xl text-center font-bold text-gray-600">GET ON THE TRAIL! MEET NEW FRIENDS! ENJOY LIBATIONS! EXPERIENCE FUN!</h1>
               
-              
-              <ol className='mt-6'>
-                <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EMBARK</a> on a craft beverage journey and discover new favorites with Craft Block Trails</li>
-                <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">JOIN</a> a community of like-minded craft beverage enthusiasts with Craft Block Communities</li>
-                <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EXPERIENCE</a> special privileges and VIP access with Craft Block Pass</li>
-                <li className=''><a className="font-semibold underline underline-offset-4 text-gray-900">UNLOCK</a> a new level of craft beverage experience with Craft Block Games.</li>
-                {/* <li className='pb-2'>All benefits are <a className="font-semibold text-gray-900">SHARED</a> and <a className="font-semibold text-gray-900">TRADABLE</a> across retail companies</li> */}
-                
-              </ol>
+              <div className='flex content-center px-60'>
+                <ol className='mt-6'>
+                  <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EMBARK</a> on a craft beverage journey and discover new favorites with Craft Block Trails</li>
+                  <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">JOIN</a> a community of like-minded craft beverage enthusiasts with Craft Block Communities</li>
+                  <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EXPERIENCE</a> special privileges and VIP access with Craft Block Pass</li>
+                  <li className=''><a className="font-semibold underline underline-offset-4 text-gray-900">UNLOCK</a> a new level of craft beverage experience with Craft Block Games.</li>
+                  {/* <li className='pb-2'>All benefits are <a className="font-semibold text-gray-900">SHARED</a> and <a className="font-semibold text-gray-900">TRADABLE</a> across retail companies</li> */}
+                </ol>
+              </div>
               <p className='mt-6 text-center'>All benefits are <a className="font-semibold text-gray-900">SHARED</a> and <a className="font-semibold text-gray-900">TRADABLE</a> across retail companies</p>
 
 
@@ -411,6 +440,8 @@ const HomePage = () => {
               <div className=" py-6 px-6 text-center bg-gray-50 sm:rounded-lg">  
                 {user && user.addr ? <RenderActionPanalEnterQuestCode />: <RenderActionPanalConnectWallet />}
               </div>
+
+             
             </div>
             {/* /End replace */}
           </div>
