@@ -5,7 +5,7 @@ import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
 import { CalculatorIcon, CheckBadgeIcon, UsersIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
-
+import data from "../../data/quest.json"
 import * as fcl from "@onflow/fcl";
 import * as types from "@onflow/types";
 
@@ -32,6 +32,8 @@ const userNavigation = [
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
 ]
+
+
 
 const product = {
   name: 'North East Ohio Whiskey Tour',
@@ -125,7 +127,7 @@ const HomePage = () => {
 
   const logIn = async () => {
     await fcl.authenticate();
-    createCollectionClick()
+    // createCollectionClick()
   };
 
   const logOut = () => {
@@ -212,7 +214,7 @@ const HomePage = () => {
           onClick={() => claim()}
         >
           <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-          <span>Claim Membership Card</span>
+          <span>Claim Quest</span>
         </a>
       </div>
           </div>
@@ -221,26 +223,51 @@ const HomePage = () => {
     )
   }
 
-  const createCollectionClick = async () => {
-    const transactionId = await fcl.send([
-      fcl.transaction(createCollectionTransaction),
-      fcl.args([
+  // const createCollectionClick = async () => {
+  //   const transactionId = await fcl.send([
+  //     fcl.transaction(createCollectionTransaction),
+  //     fcl.args([
         
-      ]),
-      fcl.payer(fcl.authz),
-      fcl.proposer(fcl.authz),
-      fcl.authorizations([fcl.authz]),
-      fcl.limit(9999),
-    ]).then(fcl.decode);
+  //     ]),
+  //     fcl.payer(fcl.authz),
+  //     fcl.proposer(fcl.authz),
+  //     fcl.authorizations([fcl.authz]),
+  //     fcl.limit(9999),
+  //   ]).then(fcl.decode);
 
-    console.log("Transaciton id: " + transactionId)
-  }
+  //   console.log("Transaciton id: " + transactionId)
+  // }
 
-  const claim = async () => {
+  const claim = async() => {
+
+    const quest = 
+      {
+        "image": "https://flow-hackathon.vercel.app/2.png",
+        "thumbnail": "https://flow-hackathon.vercel.app/2.png",
+        "name": "Indina Beer Tour",
+        "description": "Greatest tour in ohio!",
+        "startDateTime": 1213.01,
+        "endDateTime": 1234.01,
+        "action": [
+          {key: "image", value: "http://someimage.png"},
+          {key: "locationName", value: "North East Ohio Tour"}
+        ]
+      }
+
+ 
+    
+
     const transactionId = await fcl.mutate({
       cadence: `${claimQuestTransaction}`,
       args: (arg, t) => [
-
+        arg(user.addr, types.Address),
+        arg(quest.image, types.String),
+        arg(quest.thumbnail, types.String),
+        arg(quest.name, types.String),
+        arg(quest.description, types.String),
+        arg(quest.startDateTime, types.UFix64),
+        arg(quest.endDateTime, types.UFix64),
+        // arg(act.action, types.Array(types.Dictionary({key: types.String, value: types.String}))),
       ], 
       proposer: fcl.currentUser,
       payer: fcl.currentUser,
@@ -423,7 +450,7 @@ const HomePage = () => {
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
               <h1 className="text-3xl text-center font-bold text-gray-600">GET ON THE TRAIL! MEET NEW FRIENDS! ENJOY LIBATIONS! EXPERIENCE FUN!</h1>
               
-              <div className='flex content-center px-60'>
+              <div className='px-60'>
                 <ol className='mt-6'>
                   <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EMBARK</a> on a craft beverage journey and discover new favorites with Craft Block Trails</li>
                   <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">JOIN</a> a community of like-minded craft beverage enthusiasts with Craft Block Communities</li>

@@ -6,6 +6,9 @@ import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 
+import { getQuest } from "../../cadence/scripts/getQuest.js";
+import { getIds  } from "../../cadence/scripts/getIds.js";
+
 import * as fcl from "@onflow/fcl";
 import * as types from "@onflow/types";
 
@@ -196,7 +199,7 @@ const CollectionPage = () => {
      <>
       <h2 className="sr-only">Products</h2>
 
-      <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+      {/* <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         {products.map((product) => (
           <a key={product.id} href={product.href} className="group">
             <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
@@ -207,12 +210,91 @@ const CollectionPage = () => {
               />
             </div>
             <h3 className="mt-4 text-center text-sm text-gray-700">{product.name}</h3>
-            {/* <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p> */}
+            
           </a>
         ))}
-      </div>
+        </div> */}
+        <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {collections.map(collection => (
+            <div key={collection.id}>
+              <a key={collection.id} href={`/collection-detail?id=${collection.id}`} className="group">
+                <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
+                  <img
+                    src={collection.image}
+                    alt={collection.id}
+                    className="h-full w-full object-cover object-center group-hover:opacity-75"
+                  />
+                </div>
+                <h3 className="mt-4 text-center text-sm text-gray-700">{collection.name}</h3>
+              </a>
+            </div>
+          ))}
+        </div>
+
+
+      
+      
     </>
     )
+  }
+
+  
+  const [result, setResult] = useState()
+  const [nameResult, setNameResult] = useState()
+  const [imageResult, setImageResult] = useState()
+  const [collections, setCollections] = useState([])
+
+  useEffect(() => {
+    if (user && user.addr) {
+      RenderQuests();
+    }
+  }
+  , [user]);
+
+  const RenderQuests = async() => {
+
+    // Empty the images array
+    let ids = [];
+
+    try {
+      ids = await fcl.query({
+        cadence: `${getIds}`,
+        args: (arg, t) => [
+          arg(user.addr, types.Address), 
+        ],
+      })
+    } catch(err) {
+      console.log("No NFTs Owned")
+    }
+
+    try {
+      for(let i = 0; i < ids.length; i++) {
+        const result = await fcl.query({
+          cadence: `${getQuest}`,
+          args: (arg, t) => [
+            arg(user.addr, types.Address), 
+            arg(ids[i].toString(), types.UInt64),
+          ],
+        })
+
+        setNameResult(result.name)
+        setImageResult(result.thumbnail.url)
+
+        setCollections(prevItems => [
+          ...prevItems,
+          { id: ids[i], name: result.name, image: result.thumbnail.url },
+        ])
+        
+        console.log(ids[i])
+
+      }
+    } catch (error) {
+      console.log(err)
+    }
+
+    
+    
+
   }
 
   return (
@@ -387,6 +469,7 @@ const CollectionPage = () => {
               <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 {/* Replace with your content */}
                   {user && user.addr ? <RenderCollection /> : `Please login to your Wallet log to see your Craft Block Quest (TM)` }
+                  {/* { result.map((value, key) => <div>{value.name}</div>) } */}
                 {/* /End replace */}
               </div>
             </div>

@@ -1,4 +1,5 @@
-import NonFungibleToken from 0xf8d6e0586b0a20c7
+import NonFungibleToken from 0xf8d6e0586b0a20c7;
+import MetadataViews from 0xf8d6e0586b0a20c7;
 
 access(all) contract MembershipCard: NonFungibleToken {
 
@@ -7,7 +8,7 @@ access(all) contract MembershipCard: NonFungibleToken {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event Minted(name: String)
+    pub event Minted(id: UInt64)
 
     pub let CollectionStoragePath: StoragePath
     pub let CollectionPublicPath: PublicPath
@@ -37,9 +38,10 @@ access(all) contract MembershipCard: NonFungibleToken {
     }
 
 
-    pub resource NFT: NonFungibleToken.INFT {
+    pub resource NFT: NonFungibleToken.INFT, MetadataViews.Resolver {
         pub let id: UInt64
         pub let image: String
+        pub let thumbnail: String
         pub let name: String
         pub let description: String
         pub let startDateTime: UFix64
@@ -51,6 +53,7 @@ access(all) contract MembershipCard: NonFungibleToken {
 
         init(
             image: String,
+            thumbnail: String,
             name: String,
             description: String,
             startDateTime: UFix64,
@@ -58,6 +61,7 @@ access(all) contract MembershipCard: NonFungibleToken {
         ){
             self.id = self.uuid
             self.image = image
+            self.thumbnail = thumbnail
             self.name = name
             self.description = description
             self.startDateTime = startDateTime
@@ -66,6 +70,27 @@ access(all) contract MembershipCard: NonFungibleToken {
             self.totalVisits = 0
             self.action <- {}
         }
+
+        pub fun getViews(): [Type] {
+            return [
+                Type<MetadataViews.Display>()
+            ]
+        }
+
+        pub fun resolveView(_ view: Type): AnyStruct? {
+          switch view {
+            case Type<MetadataViews.Display>():
+              return MetadataViews.Display(
+                name: self.name,
+                description: self.description,
+                thumbnail: MetadataViews.HTTPFile(
+                    url: self.thumbnail
+                )
+              )
+            }
+            return nil
+          }
+        
 
         pub fun setAction(action: @{String: Action}) {
             var other <- action
@@ -87,16 +112,14 @@ access(all) contract MembershipCard: NonFungibleToken {
     pub resource Action {
         pub let id: UInt64
         pub let image: String
-        pub let startDateTime: UFix64
-        pub let endDateTime: UFix64
         pub let locationName: String
         pub let locationDescription: String
         pub let website: String
-        pub let phone: UInt64
+        pub let phone: String
         pub let address: String
         pub let city: String
         pub let state: String
-        pub let zip: UInt64
+        pub let zip: String
         pub let amenities: [String]
         pub let status: String
         pub let earnedPoints: UInt64
@@ -104,16 +127,14 @@ access(all) contract MembershipCard: NonFungibleToken {
 
         init(
             image: String,
-            startDateTime: UFix64,
-            endDateTime: UFix64,
             locationName: String,
             locationDescription: String,
             website: String,
-            phone: UInt64,
+            phone: String,
             address: String,
             city: String,
             state: String,
-            zip: UInt64,
+            zip: String,
             amenities: [String],
             status: String,
             earnedPoints: UInt64,
@@ -121,8 +142,6 @@ access(all) contract MembershipCard: NonFungibleToken {
         ){
             self.id = self.uuid
             self.image = image
-            self.startDateTime = startDateTime
-            self.endDateTime = endDateTime
             self.locationName = locationName
             self.locationDescription = locationDescription
             self.website = website
@@ -142,15 +161,15 @@ access(all) contract MembershipCard: NonFungibleToken {
         pub fun deposit(token: @NonFungibleToken.NFT)
         pub fun getIDs(): [UInt64]
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
-        pub fun borrowMembershipCardNFT(id: UInt64): &MembershipCard.NFT? {
-            post {
-                (result == nil) || (result?.id == id):
-                    "Cannot borrow the reference: the ID of the returned reference is incorrect"
-            }
-        }
+        // pub fun borrowViewResolver(id: UInt64): &AnyResource{MetadataViews.Resolver} {
+        //     post {
+        //         (result == nil):
+        //             "Cannot borrow the reference: the ID of the returned reference is incorrect"
+        //     }
+        // }
     }
 
-    pub resource Collection: CollectionPublic, NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic {
+    pub resource Collection: CollectionPublic, NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection {
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
@@ -188,13 +207,10 @@ access(all) contract MembershipCard: NonFungibleToken {
             return (&self.ownedNFTs[id] as &NonFungibleToken.NFT?)!
         }
 
-        pub fun borrowMembershipCardNFT(id: UInt64): &MembershipCard.NFT? {
-            if self.ownedNFTs[id] != nil {
-                let ref = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?)!
-                return ref as! &MembershipCard.NFT
-            }
-
-            return nil
+        pub fun borrowViewResolver(id: UInt64): &AnyResource{MetadataViews.Resolver} {
+          let nft = (&self.ownedNFTs[id] as auth &NonFungibleToken.NFT?)!
+          let MembershipCard = nft as! &MembershipCard.NFT
+          return MembershipCard as &AnyResource{MetadataViews.Resolver}
         }
 
         init () {
@@ -210,84 +226,91 @@ access(all) contract MembershipCard: NonFungibleToken {
         return <- create Collection()
     }
 
-    pub resource interface AdminProxyPublic {
-        pub fun depositAdmin(admin: Capability<&Admin>) {
-            pre {
-                admin.check(): "This capability is invalid!"
-            }
-        }
+    pub fun mintNFT(
+        recipient: &{NonFungibleToken.CollectionPublic},
+        image: String,
+        thumbnail: String,
+        name: String,
+        description: String,
+        startDateTime: UFix64,
+        endDateTime: UFix64,
+        action: @MembershipCard.Action
+    ){        
+        var nft <- create NFT(
+            image: image,
+            thumbnail: thumbnail,
+            name: name,
+            description: description,
+            startDateTime: startDateTime,
+            endDateTime: endDateTime
+        )
+        emit Minted(id: nft.id)
+
+        let actions <- nft.getAction()
+
+        // for index, element in action {
+
+            
+        //     let action <- MembershipCard.mintAction(
+        //         image: element["image"]!,
+        //         locationName: element["locationName"]!,
+        //         locationDescription: element["locationDescription"]!,
+        //         website: element["website"]!,
+        //         phone: element["phone"]!,
+        //         address: element["address"]!,
+        //         city: element["city"]!,
+        //         state: element["state"]!,
+        //         zip: element["zip"]!,
+        //         amenities: [element["amenities"]!]!,
+        //         status: element["status"]!,
+        //         earnedPoints: 0,
+        //         completeDateTime: 0.0
+        //     )
+        
+           
+        //     let oldAction <- actions["a".concat(index.toString())] <- action
+        //     destroy oldAction
+
+        // }
+
+            let oldAction <- actions["a1"] <- action
+            destroy oldAction
+        nft.setAction(action: <- actions)
+        
+        recipient.deposit(token: <- nft)
+        MembershipCard.totalSupply = MembershipCard.totalSupply + 1
     }
 
-    pub resource AdminProxy: AdminProxyPublic {
-        pub var admin: Capability<&Admin>?
-
-        pub fun depositAdmin(admin: Capability<&Admin>) {
-            self.admin = admin
-        }
-
-        init() {
-            self.admin = nil
-        }
-    }    
-
-    pub fun createProxy(): @AdminProxy {
-        return <- create AdminProxy()
-    }
-
-    pub resource Admin {
-        pub fun mintNFT(
-            image: String,
-            name: String,
-            description: String,
-            startDateTime: UFix64,
-            endDateTime: UFix64): @MembershipCard.NFT {
-            
-            emit Minted(name: name)
-            
-            return <- create NFT(
-                image: image,
-                name: name,
-                description: description,
-                startDateTime: startDateTime,
-                endDateTime: endDateTime
-            )
-        }
-
-        pub fun mintAction(
-            image: String,
-            startDateTime: UFix64,
-            endDateTime: UFix64,
-            locationName: String,
-            locationDescription: String,
-            website: String,
-            phone: UInt64,
-            address: String,
-            city: String,
-            state: String,
-            zip: UInt64,
-            amenities: [String],
-            status: String,
-            earnedPoints: UInt64,
-            completeDateTime: UFix64
-        ): @Action {
-            return <- create Action(
-                                image: image,
-                                startDateTime: startDateTime,
-                                endDateTime: endDateTime,
-                                locationName: locationName,
-                                locationDescription: locationDescription,
-                                website: website,
-                                phone: phone,
-                                address: address,
-                                city: city,
-                                state: state,
-                                zip: zip,
-                                amenities: amenities,
-                                status: status,
-                                earnedPoints: earnedPoints,
-                                completeDateTime: completeDateTime
-                            )
-        }
+    pub fun mintAction(
+        image: String,
+        locationName: String,
+        locationDescription: String,
+        website: String,
+        phone: String,
+        address: String,
+        city: String,
+        state: String,
+        zip: String,
+        amenities: [String],
+        status: String,
+        earnedPoints: UInt64,
+        completeDateTime: UFix64
+    ): @Action {
+        return <- create Action(
+            image: image,
+            locationName: locationName,
+            locationDescription: locationDescription,
+            website: website,
+            phone: phone,
+            address: address,
+            city: city,
+            state: state,
+            zip: zip,
+            amenities: amenities,
+            status: status,
+            earnedPoints: earnedPoints,
+            completeDateTime: completeDateTime
+        )
     }
 
     pub fun createMemeberPoints(): @MemberPoints{MemberPointsInterface} {
@@ -303,8 +326,6 @@ access(all) contract MembershipCard: NonFungibleToken {
         self.CollectionPublicPath = /public/ExperienceCollection
         self.AdminStoragePath = /storage/Admin
         self.MemberPointStoragePath = /storage/MemberPoints
-
-        self.account.save(<- create Admin(), to: MembershipCard.AdminStoragePath)
 
         emit ContractInitialized()
     }

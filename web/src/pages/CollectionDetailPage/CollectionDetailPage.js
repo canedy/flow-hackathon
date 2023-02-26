@@ -2,6 +2,7 @@ import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import { useState, useEffect, Fragment } from 'react'
+import { useParams } from '@redwoodjs/router'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
@@ -114,7 +115,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const CollectionDetailPage = () => {
+const CollectionDetailPage = (props) => {
+  const { id } = useParams()
+  console.log(id)
 
   const [ user, setUser ] = useState();
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
@@ -160,6 +163,8 @@ const CollectionDetailPage = () => {
       )
     }
   }
+
+  
 
   return (
     <>
@@ -348,7 +353,7 @@ const CollectionDetailPage = () => {
                             <>
                               {/* <span className="sr-only"> {image.name} </span> */}
                               <span className="absolute inset-0 overflow-hidden rounded-md">
-                                <img src={image.src} alt="" className="h-full w-full object-cover object-center" />
+                                <img src={image.src} alt="" className="h-full w-full object-cover object-center grayscale" />
                               </span>
                               <span
                                 className={classNames(
@@ -386,7 +391,7 @@ const CollectionDetailPage = () => {
                                           src={image.src}
                                           alt=''
                                           // className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
-                                          className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
+                                          className="grayscale h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
                                         />
                                       </div>
                                       {/* <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]"></div> */}
