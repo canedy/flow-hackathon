@@ -73,7 +73,8 @@ access(all) contract MembershipCard: NonFungibleToken {
 
         pub fun getViews(): [Type] {
             return [
-                Type<MetadataViews.Display>()
+                Type<MetadataViews.Display>(),
+                Type<MetadataViews.Trait>()
             ]
         }
 
@@ -87,6 +88,9 @@ access(all) contract MembershipCard: NonFungibleToken {
                     url: self.thumbnail
                 )
               )
+            case Type<MetadataViews.Trait>():
+              let location: String = "Medina, OH"
+              return location
             }
             return nil
           }

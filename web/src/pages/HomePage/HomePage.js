@@ -242,9 +242,9 @@ const HomePage = () => {
 
     const quest = 
       {
-        "image": "https://flow-hackathon.vercel.app/2.png",
-        "thumbnail": "https://flow-hackathon.vercel.app/2.png",
-        "name": "Indina Beer Tour",
+        "image": "https://flow-hackathon.vercel.app/3.png",
+        "thumbnail": "https://flow-hackathon.vercel.app/3.png",
+        "name": "Cleveland Whiskey",
         "description": "Greatest tour in ohio!",
         "startDateTime": 1213.01,
         "endDateTime": 1234.01,

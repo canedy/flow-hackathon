@@ -3,11 +3,13 @@ import { MetaTags } from '@redwoodjs/web'
 
 import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
-import { StarIcon } from '@heroicons/react/20/solid'
+import { CalculatorIcon, CheckBadgeIcon, StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 
+// Cadence Scripts and Transactions
 import { getQuest } from "../../cadence/scripts/getQuest.js";
 import { getIds  } from "../../cadence/scripts/getIds.js";
+import { claimQuestTransaction } from "../../cadence/transactions/claimQuest.js"
 
 import * as fcl from "@onflow/fcl";
 import * as types from "@onflow/types";
@@ -215,6 +217,7 @@ const CollectionPage = () => {
         ))}
         </div> */}
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          
           {collections.map(collection => (
             <div key={collection.id}>
               <a key={collection.id} href={`/collection-detail?id=${collection.id}`} className="group">
@@ -230,22 +233,20 @@ const CollectionPage = () => {
             </div>
           ))}
         </div>
-
-
-      
-      
     </>
     )
   }
 
   
-  const [result, setResult] = useState()
-  const [nameResult, setNameResult] = useState()
-  const [imageResult, setImageResult] = useState()
+  // const [result, setResult] = useState()
+  // const [nameResult, setNameResult] = useState()
+  // const [imageResult, setImageResult] = useState()
   const [collections, setCollections] = useState([])
+  const [hasNFT, setHasNFT] = useState(false)
 
   useEffect(() => {
     if (user && user.addr) {
+      setHasNFT(false)
       RenderQuests();
     }
   }
@@ -263,8 +264,11 @@ const CollectionPage = () => {
           arg(user.addr, types.Address), 
         ],
       })
+
+      setHasNFT(true)
+
     } catch(err) {
-      console.log("No NFTs Owned")
+      console.log(hasNFT)
     }
 
     try {
@@ -277,25 +281,98 @@ const CollectionPage = () => {
           ],
         })
 
-        setNameResult(result.name)
-        setImageResult(result.thumbnail.url)
+        // setNameResult(result.name)
+        // setImageResult(result.thumbnail.url)
 
         setCollections(prevItems => [
           ...prevItems,
           { id: ids[i], name: result.name, image: result.thumbnail.url },
         ])
-        
-        console.log(ids[i])
 
       }
     } catch (error) {
       console.log(err)
     }
 
-    
+  }
+
+  const claim = async() => {
+
+    const quest = 
+      {
+        "image": "https://flow-hackathon.vercel.app/3.png",
+        "thumbnail": "https://flow-hackathon.vercel.app/3.png",
+        "name": "Indiana Beer",
+        "description": "Greatest tour in ohio!",
+        "startDateTime": 1213.01,
+        "endDateTime": 1234.01,
+        "action": [
+          {key: "image", value: "http://someimage.png"},
+          {key: "locationName", value: "North East Ohio Tour"}
+        ]
+      }
+
+ 
     
 
+    const transactionId = await fcl.mutate({
+      cadence: `${claimQuestTransaction}`,
+      args: (arg, t) => [
+        arg(user.addr, types.Address),
+        arg(quest.image, types.String),
+        arg(quest.thumbnail, types.String),
+        arg(quest.name, types.String),
+        arg(quest.description, types.String),
+        arg(quest.startDateTime, types.UFix64),
+        arg(quest.endDateTime, types.UFix64),
+        // arg(act.action, types.Array(types.Dictionary({key: types.String, value: types.String}))),
+      ], 
+      proposer: fcl.currentUser,
+      payer: fcl.currentUser,
+      limit: 99
+    })
+
+    console.log("Transaciton ID ", transactionId)
+    
   }
+
+  const RenderActionPanalEnterQuestCode = () => {
+    return (
+      <>
+        <div className="px-4 py-5 sm:p-6">
+          <h3 className="text-lg font-medium leading-6 text-gray-900">Enter 6-digit Quest Code</h3>
+          <div className="mt-2 text-lg text-gray-500">
+            <p>You currently don't have a Craft Block Quest	&trade;. Please enter code from particpating retailer</p>
+          </div>
+          <div className="mt-5">
+          <div className="mt-1 flex rounded-md shadow-sm">
+        <div className="relative flex flex-grow items-stretch focus-within:z-10">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+            <CalculatorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          </div>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="000000"
+          />
+        </div>
+        <a
+          href='#'
+          type="button"
+          className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+          onClick={() => claim()}
+        >
+          <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+          <span>Claim Quest</span>
+        </a>
+      </div>
+          </div>
+        </div>
+      </>
+    )
+  }    
 
   return (
     <>
@@ -468,6 +545,7 @@ const CollectionPage = () => {
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
               <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                 {/* Replace with your content */}
+                  { hasNFT ? "" : <RenderActionPanalEnterQuestCode />}
                   {user && user.addr ? <RenderCollection /> : `Please login to your Wallet log to see your Craft Block Quest (TM)` }
                   {/* { result.map((value, key) => <div>{value.name}</div>) } */}
                 {/* /End replace */}

@@ -23,4 +23,4 @@ fcl.config()
 .put("accessNode.api", "http://localhost:8888")
 .put("app.detail.icon", "http://localhost:8910/favicon.png")
 .put("discovery.wallet", "http://localhost:8701/fcl/authn")
-// //.put("discovery.wallet.method", "HTTP/POST");
+.put("discovery.wallet.method", "IFRAME/RPC");

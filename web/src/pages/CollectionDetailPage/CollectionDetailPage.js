@@ -7,6 +7,10 @@ import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react
 import { StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 
+import { getQuest } from "../../cadence/scripts/getQuest.js";
+import { getIds  } from "../../cadence/scripts/getIds.js";
+import { getQuestActions } from "../../cadence/scripts/getQuestActions.js";
+
 import * as fcl from "@onflow/fcl";
 import * as types from "@onflow/types";
 
@@ -116,17 +120,27 @@ function classNames(...classes) {
 }
 
 const CollectionDetailPage = (props) => {
-  const { id } = useParams()
-  console.log(id)
 
   const [ user, setUser ] = useState();
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+
+  const { id } = useParams()
+
+
 
   useEffect(() => {
     // This listens to changes in the user objects
     // and updates the connected user
     fcl.currentUser().subscribe(setUser);
   }, [])
+
+  useEffect(() => {
+    if (user && user.addr) {
+      RenderQuest();
+      RenderQuestActions();
+    }
+  }
+  , [user]);
 
   const logIn = () => {
     fcl.authenticate();
@@ -164,7 +178,79 @@ const CollectionDetailPage = (props) => {
     }
   }
 
-  
+  const [quest, setQuest] = useState([])  
+  const [nameResult, setNameResult] = useState()
+  const [descriptionResult, setDescriptionResult] = useState()
+  const [imageResult, setImageResult] = useState()
+  const [collectionAction, setCollectionAction] = useState([])
+
+  const RenderQuest = async() => {
+
+    try {
+
+      const result = await fcl.query({
+        cadence: `${getQuest}`,
+        args: (arg, t) => [
+          arg(user.addr, types.Address), 
+          arg(id.toString(), types.UInt64),
+        ],
+      })
+
+      setQuest(prevItems => [
+        ...prevItems,
+        { id: id, type: "quest", name: result.name, description: result.description, image: result.thumbnail.url },
+      ])
+      
+      setNameResult(result.name)
+      setDescriptionResult(result.description)
+
+    } catch (error) {
+      console.log(err)
+    }
+  }
+
+  const RenderQuestActions = async() => {
+
+    let ids = []
+    
+    try {
+      const result = await fcl.query({
+        cadence: `${getQuestActions}`,
+        args: (arg, t) => [
+          arg(user.addr, types.Address), 
+          arg(id.toString(), types.UInt64),
+        ],
+      })
+
+      console.log(result)
+
+      try {
+        for(let i = 0; i < Object.keys(result.action).length; i++) {
+        setCollectionAction(prevItems => [
+          ...prevItems,
+          {image: result.action[Object.keys(result.action)[i]].image},
+        ])
+
+        setQuest(prevItems => [
+          ...prevItems,
+          { id: id, type: "action", 
+            name: result.action[Object.keys(result.action)[i]].locationName, 
+            description: result.action[Object.keys(result.action)[i]].locationDescription, 
+            image: result.action[Object.keys(result.action)[i]].image, 
+            website: result.action[Object.keys(result.action)[i]].website, },
+        ])
+
+        }
+        
+      } catch (error) {
+        console.log(error)
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
 
   return (
     <>
@@ -327,7 +413,7 @@ const CollectionDetailPage = (props) => {
           </Disclosure>
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-white">North East Ohio Whiskey Tour</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-white">{ nameResult }</h1>
             </div>
           </header>
         </div>
@@ -344,16 +430,16 @@ const CollectionDetailPage = (props) => {
                   {/* Image selector */}
                   <div className="mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
                     <Tab.List className="grid  grid-cols-2 sm:grid-cols-4 gap-6">
-                      {product.images.map((image) => (
+                      {quest.map((element, index)  => (
                         <Tab
-                          key={image.id}
+                          key={index}
                           className="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
                         >
                           {({ selected }) => (
                             <>
                               {/* <span className="sr-only"> {image.name} </span> */}
                               <span className="absolute inset-0 overflow-hidden rounded-md">
-                                <img src={image.src} alt="" className="h-full w-full object-cover object-center grayscale" />
+                                <img src={element.image} alt="" className="h-full w-full object-cover object-center grayscale" />
                               </span>
                               <span
                                 className={classNames(
@@ -372,8 +458,8 @@ const CollectionDetailPage = (props) => {
                   <h1 className="text-2xl font-bold text-center pt-12 text-gray-600">Visit Retailer. Collect Points. Earn Rewards.</h1>
 
                   <Tab.Panels className="aspect-w-1 aspect-h-1 w-full">
-                    {product.images.map((image) => (
-                      <Tab.Panel key={image.id}>
+                    {quest.map((element, index) => (
+                      <Tab.Panel key={index}>
                         {/* <img
                           src={image.src}
                           alt={image.alt}
@@ -387,8 +473,9 @@ const CollectionDetailPage = (props) => {
                                     {/* <div className="relative h-4/6 w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]"> */}
                                     <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
                                       <div className="absolute inset-0">
+                                     
                                         <img
-                                          src={image.src}
+                                          src={element.image}
                                           alt=''
                                           // className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
                                           className="grayscale h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
@@ -397,9 +484,9 @@ const CollectionDetailPage = (props) => {
                                       {/* <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]"></div> */}
                                       <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]">
                                         <div className='flex min-h-full flex-col items-center justify-center'>
-                                          <h1 className='text-3xl font-bold'>{adData.companyName}</h1>
-                                          <p className='text-lg'>{adData.slogan}</p>
-                                          <p className='text-base'>{adData.brand}</p>
+                                          <h1 className='text-3xl font-bold'>{element.name}</h1>
+                                          <p className='text-lg'>{element.description}</p>
+                                          <p className='text-base'>{element.website}</p>
                                           <img
                                             src='qrcode_clevelandwhiskey.com.png'
                                             alt='todo - add QR Code'
@@ -410,7 +497,7 @@ const CollectionDetailPage = (props) => {
                                     </div>
                                    
                                   </div>
-                                   <div className='pt-4 text-center text-xs'>Flip card by hovering or clicking image</div>
+                                   <div className='pt-4 text-center text-sm'>Flip card by hovering or clicking image</div>
                                 {/* </div> */}
                       </Tab.Panel>
                     ))}
@@ -451,8 +538,8 @@ const CollectionDetailPage = (props) => {
 
                     <div
                       className="space-y-6 text-base text-gray-700"
-                      dangerouslySetInnerHTML={{ __html: product.description }}
                     />
+                    { descriptionResult }
                   </div>
 
                   {/* <form className="mt-6"> */}

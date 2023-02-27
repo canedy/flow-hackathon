@@ -40,17 +40,17 @@ export const claimQuestTransaction = `
 
 
         let action1 <- MembershipCard.mintAction(
-          image: "image",
-          locationName: "locationName",
-          locationDescription: "locationDescription",
-          website: "website",
-          phone: "3333333333",
-          address: "address",
-          city: "city",
-          state: "state",
+          image: "https://flow-hackathon.vercel.app/1.png",
+          locationName: "Medina",
+          locationDescription: "Medina Great",
+          website: "https://www.google.com",
+          phone: "333-333-3333",
+          address: "1234 Medina",
+          city: "Medina",
+          state: "Ohio",
           zip: "33333",
-          amenities: ["amenities"],
-          status: "status",
+          amenities: ["Out Side"],
+          status: "Open",
           earnedPoints: 0,
           completeDateTime: 0.0          
         )
