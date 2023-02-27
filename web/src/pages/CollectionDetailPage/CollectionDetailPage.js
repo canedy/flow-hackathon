@@ -95,13 +95,9 @@ const product = {
     {
       name: 'Rewards',
       items: [
-        '1 pt something good',
-        '1 pt something good',
-        '5 pt something good',
-        '5 pt something good',
-        '10 pt something good',
-        '10 pt something good',
-
+        '50  pts : Get branded coaster',
+        '100 pts : Get branded t-shirt',
+        '200 pts : Custom paring of Whiskey with the retailer',
       ],
     }
     // More sections...
@@ -378,7 +374,7 @@ const CollectionDetailPage = (props) => {
                     ))}
                   </div>
                   <div className="border-t border-gray-700 pt-4 pb-3">
-                    <div className="flex items-center px-5">
+                    {/* <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
                         <img className="h-10 w-10 rounded-full" src={userProfile.imageUrl} alt="" />
                       </div>
@@ -393,9 +389,9 @@ const CollectionDetailPage = (props) => {
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
-                    </div>
+                    </div> */}
                     <div className="mt-3 space-y-1 px-2">
-                      {userNavigation.map((item) => (
+                      {/* {userNavigation.map((item) => (
                         <Disclosure.Button
                           key={item.name}
                           as="a"
@@ -404,7 +400,8 @@ const CollectionDetailPage = (props) => {
                         >
                           {item.name}
                         </Disclosure.Button>
-                      ))}
+                      ))} */}
+                      {user && user.addr ? <RenderLogout />: <RenderLogin />}
                     </div>
                   </div>
                 </Disclosure.Panel>

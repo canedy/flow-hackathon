@@ -12,17 +12,26 @@
 		"emulator": "127.0.0.1:3569",
 		"mainnet": "access.mainnet.nodes.onflow.org:9000",
 		"sandboxnet": "access.sandboxnet.nodes.onflow.org:9000",
-		"testnet": "access.devnet.nodes.onflow.org:9000"
+		"testnet": "access.devnet.nodes.onflow.org:9000" 
 	},
 	"accounts": {
 		"emulator-account": {
 			"address": "f8d6e0586b0a20c7",
 			"key": "3f765ff18e4d92d68383b91fedbd7521c1283336066aa7d99746dcbbcceec100"
+		},
+		"testnet-account": {
+			"address": "0x3b5750ca70a87ea0",
+			"key": "c90bc2842db7c6f9c67a475e08e4060a8bff02e43f3879cae32756ebed68332a"
 		}
 	},
 	"deployments": {
 		"emulator": {
 			"emulator-account": [
+				"MembershipCard"
+			]
+		},
+		"testnet": {
+			"testnet-account": [
 				"MembershipCard"
 			]
 		}

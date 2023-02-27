@@ -404,7 +404,7 @@ const HomePage = () => {
                     ))}
                   </div>
                   <div className="border-t border-gray-700 pt-4 pb-3">
-                    <div className="flex items-center px-5">
+                    {/* <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
                         <img className="h-10 w-10 rounded-full" src={userProfile.imageUrl} alt="" />
                       </div>
@@ -419,9 +419,9 @@ const HomePage = () => {
                         <span className="sr-only">View notifications</span>
                         <BellIcon className="h-6 w-6" aria-hidden="true" />
                       </button>
-                    </div>
+                    </div> */}
                     <div className="mt-3 space-y-1 px-2">
-                      {userNavigation.map((item) => (
+                      {/* {userNavigation.map((item) => (
                         <Disclosure.Button
                           key={item.name}
                           as="a"
@@ -430,7 +430,8 @@ const HomePage = () => {
                         >
                           {item.name}
                         </Disclosure.Button>
-                      ))}
+                      ))} */}
+                      {user && user.addr ? <RenderLogout />: <RenderLogin />}
                     </div>
                   </div>
                 </Disclosure.Panel>
@@ -450,7 +451,7 @@ const HomePage = () => {
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
               <h1 className="text-3xl text-center font-bold text-gray-600">GET ON THE TRAIL! MEET NEW FRIENDS! ENJOY LIBATIONS! EXPERIENCE FUN!</h1>
               
-              <div className='px-60'>
+              <div className='px-30 md:px-60'>
                 <ol className='mt-6'>
                   <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">EMBARK</a> on a craft beverage journey and discover new favorites with Craft Block Trails</li>
                   <li className='pb-5'><a className="font-semibold underline underline-offset-4 text-gray-900">JOIN</a> a community of like-minded craft beverage enthusiasts with Craft Block Communities</li>
