@@ -522,9 +522,7 @@ const HomePage = () => {
               </div>
               <p className='mt-6 text-center'>All benefits are <a className="font-semibold text-gray-900">SHARED</a> and <a className="font-semibold text-gray-900">TRADABLE</a> across retail companies</p>
 
-
-              <p className="text-center py-12">TODO - Insert Video of what this app can do</p>
-              
+           
               <div className=" py-6 px-6 text-center bg-gray-50 sm:rounded-lg">  
                 {user && user.addr ? <RenderActionPanalEnterQuestCode />: <RenderActionPanalConnectWallet />}
               </div>
