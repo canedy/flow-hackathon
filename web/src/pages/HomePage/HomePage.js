@@ -5,7 +5,7 @@ import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
 import { CalculatorIcon, CheckBadgeIcon, UsersIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
-import { Form, TextField, Submit } from '@redwoodjs/forms'
+import { FieldError, Form, TextField, Submit } from '@redwoodjs/forms'
 
 import data from "../../data/quest.json"
 import * as fcl from "@onflow/fcl";
@@ -199,8 +199,18 @@ const HomePage = () => {
             <div className="mt-1 flex rounded-md shadow-sm">
               <div className="relative flex flex-grow items-stretch focus-within:z-10">
                 <Form className="block w-full" onSubmit={claim}>
-                  <TextField  className="rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" name="input" />
-                  <Submit className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                  <TextField  className="rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
+                    name="input" 
+                    validation={{ required: true,
+                      pattern: {
+                        value: /^(1234|4567|7890)$/,
+                        message: 'Please enter a valid email address',
+                      },
+                     }} 
+                    
+                  />
+                  
+                  <Submit className="relative inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 mx-1 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
                     Claim Quest
                   </Submit>
                 </Form>
@@ -225,6 +235,8 @@ const HomePage = () => {
                 <span>Claim Quest</span>
               </a> */}
             </div>
+            Current retailers ready to mint are 1234 - Cleveland Brewery Tour ; 4567 - Kentucky Bourbon Trail ; 7890 - Medina Chamber of Commerce
+            
           </div>
         </div>
       </>
@@ -257,8 +269,8 @@ const HomePage = () => {
         {
           "image": "https://flow-hackathon.vercel.app/fundayz.png",
           "thumbnail": "https://flow-hackathon.vercel.app/fundayz.png",
-          "name": "Cleveland Whiskey",
-          "description": "Greatest tour in ohio!",
+          "name": "Cleveland Brewery Tour",
+          "description": "Explore Cleveland's thriving craft beer scene on this guided tour. Visit some of the city's top breweries, taste a variety of unique and delicious beers, and learn about the history and culture of beer in Cleveland.",
           "startDateTime": 1213.01,
           "endDateTime": 1234.01,
           "action": [
@@ -273,8 +285,8 @@ const HomePage = () => {
         {
           "image": "https://flow-hackathon.vercel.app/cupcake-1.png",
           "thumbnail": "https://flow-hackathon.vercel.app/cupcake-1.png",
-          "name": "Washington Whiskey",
-          "description": "Greatest tour in ohio!",
+          "name": "Medina Chamber of Commerce",
+          "description": "The Medina Chamber of Commerce is dedicated to supporting and promoting the local business community in Medina. Our mission is to help businesses grow and thrive through networking, education, and advocacy.",
           "startDateTime": 1213.01,
           "endDateTime": 1234.01,
           "action": [
@@ -289,8 +301,8 @@ const HomePage = () => {
         {
           "image": "https://flow-hackathon.vercel.app/bigfoot-traits.png",
           "thumbnail": "https://flow-hackathon.vercel.app/bigfoot-traits.png",
-          "name": "Indiana Whiskey",
-          "description": "Greatest tour in ohio!",
+          "name": "Kentucky Bourbon Trail",
+          "description": "Follow the legendary Kentucky Bourbon Trail and experience the finest bourbon distilleries in the world. Discover the rich history, culture, and craftsmanship of bourbon-making while enjoying tastings, tours, and unique experiences.",
           "startDateTime": 1213.01,
           "endDateTime": 1234.01,
           "action": [
@@ -308,6 +320,7 @@ const HomePage = () => {
       cadence: `${claimQuestTransaction}`,
       args: (arg, t) => [
         arg(user.addr, types.Address),
+        arg(data.input, types.UInt64),
         arg(quest.image, types.String),
         arg(quest.thumbnail, types.String),
         arg(quest.name, types.String),
@@ -318,7 +331,7 @@ const HomePage = () => {
       ], 
       proposer: fcl.currentUser,
       payer: fcl.currentUser,
-      limit: 99
+      limit: 999
     })
 
     console.log("Transaciton ID ", transactionId)

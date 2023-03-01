@@ -5,6 +5,7 @@ import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
 import { CalculatorIcon, CheckBadgeIcon, StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { FieldError, Form, TextField, Submit } from '@redwoodjs/forms'
 
 // Cadence Scripts and Transactions
 import { getQuest } from "../../cadence/scripts/getQuest.js";
@@ -246,6 +247,7 @@ const CollectionPage = () => {
 
   useEffect(() => {
     if (user && user.addr) {
+      setCollections([])
       setHasNFT(false)
       RenderQuests();
     }
@@ -297,29 +299,69 @@ const CollectionPage = () => {
 
   }
 
-  const claim = async() => {
-
-    const quest = 
-      {
-        "image": "https://flow-hackathon.vercel.app/3.png",
-        "thumbnail": "https://flow-hackathon.vercel.app/3.png",
-        "name": "Indiana Beer",
-        "description": "Greatest tour in ohio!",
-        "startDateTime": 1213.01,
-        "endDateTime": 1234.01,
-        "action": [
-          {key: "image", value: "http://someimage.png"},
-          {key: "locationName", value: "North East Ohio Tour"}
-        ]
-      }
-
- 
+  const claim = async (data) => {
     
+    let quest = {}
+
+    switch (data.input) {
+      case "1234":
+        console.log("Craft Distillery")
+        quest = 
+        {
+          "image": "https://flow-hackathon.vercel.app/fundayz.png",
+          "thumbnail": "https://flow-hackathon.vercel.app/fundayz.png",
+          "name": "Cleveland Whiskey",
+          "description": "Greatest tour in ohio!",
+          "startDateTime": 1213.01,
+          "endDateTime": 1234.01,
+          "action": [
+            {key: "image", value: "http://someimage.png"},
+            {key: "locationName", value: "North East Ohio Tour"}
+          ]
+        }
+        break;
+      case "4567":
+        console.log("Cup Cake")
+        quest = 
+        {
+          "image": "https://flow-hackathon.vercel.app/cupcake-1.png",
+          "thumbnail": "https://flow-hackathon.vercel.app/cupcake-1.png",
+          "name": "Washington Whiskey",
+          "description": "Greatest tour in ohio!",
+          "startDateTime": 1213.01,
+          "endDateTime": 1234.01,
+          "action": [
+            {key: "image", value: "http://someimage.png"},
+            {key: "locationName", value: "North East Ohio Tour"}
+          ]
+        }
+        break;
+      case "7890":
+        console.log("Bigfoot")
+        quest = 
+        {
+          "image": "https://flow-hackathon.vercel.app/bigfoot-traits.png",
+          "thumbnail": "https://flow-hackathon.vercel.app/bigfoot-traits.png",
+          "name": "Indiana Whiskey",
+          "description": "Greatest tour in ohio!",
+          "startDateTime": 1213.01,
+          "endDateTime": 1234.01,
+          "action": [
+            {key: "image", value: "http://someimage.png"},
+            {key: "locationName", value: "North East Ohio Tour"}
+          ]
+        }
+        break;    
+      default:
+        break;
+    }
+  
 
     const transactionId = await fcl.mutate({
       cadence: `${claimQuestTransaction}`,
       args: (arg, t) => [
         arg(user.addr, types.Address),
+        arg(data.input, types.UInt64),
         arg(quest.image, types.String),
         arg(quest.thumbnail, types.String),
         arg(quest.name, types.String),
@@ -330,7 +372,7 @@ const CollectionPage = () => {
       ], 
       proposer: fcl.currentUser,
       payer: fcl.currentUser,
-      limit: 99
+      limit: 999
     })
 
     console.log("Transaciton ID ", transactionId)
@@ -346,29 +388,47 @@ const CollectionPage = () => {
             <p>You currently don't have a Craft Block Quest	&trade;. Please enter code from particpating retailer</p>
           </div>
           <div className="mt-5">
-          <div className="mt-1 flex rounded-md shadow-sm">
-        <div className="relative flex flex-grow items-stretch focus-within:z-10">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <CalculatorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-          </div>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="000000"
-          />
-        </div>
-        <a
-          href='#'
-          type="button"
-          className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-          onClick={() => claim()}
-        >
-          <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-          <span>Claim Quest</span>
-        </a>
-      </div>
+            <div className="mt-1 flex rounded-md shadow-sm">
+              <div className="relative flex flex-grow items-stretch focus-within:z-10">
+                <Form className="block w-full" onSubmit={claim}>
+                  <TextField  className="rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" 
+                    name="input" 
+                    validation={{ required: true,
+                      pattern: {
+                        value: /^(1234|4567|7890)$/,
+                        message: 'Please enter a valid email address',
+                      },
+                     }} 
+                    
+                  />
+                  <FieldError className='error relative inline-flex items-center' name="message" />
+                  <Submit className="relative inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 mx-1 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    Claim Quest
+                  </Submit>
+                </Form>
+                {/* <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <CalculatorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </div> */}
+                {/* <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  placeholder="000000"
+                /> */}
+              </div>
+              
+              {/* <a
+                href='#'
+                type="button"
+                className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                onClick={() => claim()}
+              >
+                <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <span>Claim Quest</span>
+              </a> */}
+            </div>
+            <p>Current retailers ready to mint are 1234 - Cleveland Brewery Tour ; 4567 - Kentucky Bourbon Trail ; 7890 - Medina Chamber of Commerce</p>
           </div>
         </div>
       </>

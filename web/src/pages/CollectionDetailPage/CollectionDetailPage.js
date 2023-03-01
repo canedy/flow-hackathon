@@ -436,7 +436,7 @@ const CollectionDetailPage = (props) => {
                             <>
                               {/* <span className="sr-only"> {image.name} </span> */}
                               <span className="absolute inset-0 overflow-hidden rounded-md">
-                                <img src={element.image} alt="" className="h-full w-full object-cover object-center grayscale" />
+                                <img src={element.image} alt="" className="h-full w-full object-cover object-center" />
                               </span>
                               <span
                                 className={classNames(
@@ -475,7 +475,7 @@ const CollectionDetailPage = (props) => {
                                           src={element.image}
                                           alt=''
                                           // className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
-                                          className="grayscale h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
+                                          className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
                                         />
                                       </div>
                                       {/* <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [transform:rotateY(180deg)] [backface-visibility:hidden]"></div> */}
