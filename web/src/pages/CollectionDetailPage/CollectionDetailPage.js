@@ -485,7 +485,7 @@ const CollectionDetailPage = (props) => {
                                           <p className='text-lg'>{element.description}</p>
                                           <p className='text-base'>{element.website}</p>
                                           <img
-                                            src='qrcode_clevelandwhiskey.com.png'
+                                            src='https://flow-hackathon.vercel.app/qrcode_clevelandwhiskey.com.png'
                                             alt='todo - add QR Code'
                                             className='pt-5 h-2/4 w-2/4'
                                           />
