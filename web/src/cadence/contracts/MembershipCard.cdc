@@ -1,10 +1,10 @@
 // Emulator
-// import NonFungibleToken from 0xf8d6e0586b0a20c7;
-// import MetadataViews from 0xf8d6e0586b0a20c7;
+import NonFungibleToken from 0xf8d6e0586b0a20c7;
+import MetadataViews from 0xf8d6e0586b0a20c7;
 
 // Testnet
-import NonFungibleToken from 0x631e88ae7f1d7c20;
-import MetadataViews from 0x631e88ae7f1d7c20;
+// import NonFungibleToken from 0x631e88ae7f1d7c20;
+// import MetadataViews from 0x631e88ae7f1d7c20;
 
 access(all) contract MembershipCard: NonFungibleToken {
 
@@ -193,21 +193,6 @@ access(all) contract MembershipCard: NonFungibleToken {
             self.ownedNFTs[token.id] <-! token
         }
 
-
-        // pub fun getNFT(id: UInt64, a: UInt64): @NonFungibleToken.NFT {
-        //     let token <- self.ownedNFTs.remove(key: id) ?? panic("missing NFT")
-        //     let actions <- token.getAction()  
-        //     let oldAction <- actions["a1"] <- a
-        //     destroy oldAction
-        //     // let oldAction2 <- actions["a3"] <- action2
-        //     // destroy oldAction2
-
-        //     token.setAction(action: <- actions)
-            
-        //     //tbd add emit
-        //     return <- token
-        // }
-
         pub fun getIDs(): [UInt64] {
             return self.ownedNFTs.keys
         }
@@ -257,33 +242,8 @@ access(all) contract MembershipCard: NonFungibleToken {
 
         let actions <- nft.getAction()
 
-        // for index, element in action {
-
-            
-        //     let action <- MembershipCard.mintAction(
-        //         image: element["image"]!,
-        //         locationName: element["locationName"]!,
-        //         locationDescription: element["locationDescription"]!,
-        //         website: element["website"]!,
-        //         phone: element["phone"]!,
-        //         address: element["address"]!,
-        //         city: element["city"]!,
-        //         state: element["state"]!,
-        //         zip: element["zip"]!,
-        //         amenities: [element["amenities"]!]!,
-        //         status: element["status"]!,
-        //         earnedPoints: 0,
-        //         completeDateTime: 0.0
-        //     )
-        
-           
-        //     let oldAction <- actions["a".concat(index.toString())] <- action
-        //     destroy oldAction
-
-        // }
-
-            let oldAction <- actions["a1"] <- action
-            destroy oldAction
+        let oldAction <- actions["a1"] <- action
+        destroy oldAction
         nft.setAction(action: <- actions)
         
         recipient.deposit(token: <- nft)
@@ -326,6 +286,10 @@ access(all) contract MembershipCard: NonFungibleToken {
         let point: @MemberPoints{MemberPointsInterface} <- create MemberPoints()
         return <- point
     }
+
+    pub resource Admin {
+
+    }
         
 
     init() {
@@ -335,6 +299,8 @@ access(all) contract MembershipCard: NonFungibleToken {
         self.CollectionPublicPath = /public/ExperienceCollection
         self.AdminStoragePath = /storage/Admin
         self.MemberPointStoragePath = /storage/MemberPoints
+
+        self.account.save(<- create Admin(), to: MembershipCard.AdminStoragePath)
 
         emit ContractInitialized()
     }

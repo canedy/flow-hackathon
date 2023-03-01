@@ -5,6 +5,8 @@ import { useState, useEffect, Fragment } from 'react'
 import { Disclosure, Menu, Transition, RadioGroup, Tab } from '@headlessui/react'
 import { CalculatorIcon, CheckBadgeIcon, UsersIcon, QuestionMarkCircleIcon, StarIcon } from '@heroicons/react/20/solid'
 import { Bars3Icon, BellIcon, XMarkIcon, HeartIcon, MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { Form, TextField, Submit } from '@redwoodjs/forms'
+
 import data from "../../data/quest.json"
 import * as fcl from "@onflow/fcl";
 import * as types from "@onflow/types";
@@ -194,29 +196,35 @@ const HomePage = () => {
             <p>To get started get your your Craft Block Quest	&trade; code from particpating retailer</p>
           </div>
           <div className="mt-5">
-          <div className="mt-1 flex rounded-md shadow-sm">
-        <div className="relative flex flex-grow items-stretch focus-within:z-10">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <CalculatorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-          </div>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            placeholder="000000"
-          />
-        </div>
-        <a
-          href='#'
-          type="button"
-          className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-          onClick={() => claim()}
-        >
-          <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-          <span>Claim Quest</span>
-        </a>
-      </div>
+            <div className="mt-1 flex rounded-md shadow-sm">
+              <div className="relative flex flex-grow items-stretch focus-within:z-10">
+                <Form className="block w-full" onSubmit={claim}>
+                  <TextField  className="rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" name="input" />
+                  <Submit className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    Claim Quest
+                  </Submit>
+                </Form>
+                {/* <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <CalculatorIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </div> */}
+                {/* <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className="block w-full rounded-none rounded-l-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                  placeholder="000000"
+                /> */}
+              </div>
+              {/* <a
+                href='#'
+                type="button"
+                className="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                onClick={() => claim()}
+              >
+                <CheckBadgeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <span>Claim Quest</span>
+              </a> */}
+            </div>
           </div>
         </div>
       </>
@@ -238,24 +246,63 @@ const HomePage = () => {
   //   console.log("Transaciton id: " + transactionId)
   // }
 
-  const claim = async() => {
-
-    const quest = 
-      {
-        "image": "https://flow-hackathon.vercel.app/3.png",
-        "thumbnail": "https://flow-hackathon.vercel.app/3.png",
-        "name": "Cleveland Whiskey",
-        "description": "Greatest tour in ohio!",
-        "startDateTime": 1213.01,
-        "endDateTime": 1234.01,
-        "action": [
-          {key: "image", value: "http://someimage.png"},
-          {key: "locationName", value: "North East Ohio Tour"}
-        ]
-      }
-
- 
+  const claim = async (data) => {
     
+    let quest = {}
+
+    switch (data.input) {
+      case "1234":
+        console.log("Craft Distillery")
+        quest = 
+        {
+          "image": "https://flow-hackathon.vercel.app/fundayz.png",
+          "thumbnail": "https://flow-hackathon.vercel.app/fundayz.png",
+          "name": "Cleveland Whiskey",
+          "description": "Greatest tour in ohio!",
+          "startDateTime": 1213.01,
+          "endDateTime": 1234.01,
+          "action": [
+            {key: "image", value: "http://someimage.png"},
+            {key: "locationName", value: "North East Ohio Tour"}
+          ]
+        }
+        break;
+      case "4567":
+        console.log("Cup Cake")
+        quest = 
+        {
+          "image": "https://flow-hackathon.vercel.app/cupcake-1.png",
+          "thumbnail": "https://flow-hackathon.vercel.app/cupcake-1.png",
+          "name": "Washington Whiskey",
+          "description": "Greatest tour in ohio!",
+          "startDateTime": 1213.01,
+          "endDateTime": 1234.01,
+          "action": [
+            {key: "image", value: "http://someimage.png"},
+            {key: "locationName", value: "North East Ohio Tour"}
+          ]
+        }
+        break;
+      case "7890":
+        console.log("Bigfoot")
+        quest = 
+        {
+          "image": "https://flow-hackathon.vercel.app/bigfoot-traits.png",
+          "thumbnail": "https://flow-hackathon.vercel.app/bigfoot-traits.png",
+          "name": "Indiana Whiskey",
+          "description": "Greatest tour in ohio!",
+          "startDateTime": 1213.01,
+          "endDateTime": 1234.01,
+          "action": [
+            {key: "image", value: "http://someimage.png"},
+            {key: "locationName", value: "North East Ohio Tour"}
+          ]
+        }
+        break;    
+      default:
+        break;
+    }
+  
 
     const transactionId = await fcl.mutate({
       cadence: `${claimQuestTransaction}`,
